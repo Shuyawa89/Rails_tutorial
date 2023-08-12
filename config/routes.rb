@@ -6,8 +6,8 @@ Rails.application.routes.draw do
   get   "/contact", to: "static_pages#contact"
   get   "/signup",  to: "users#new"
   get   "/login",   to: "sessions#new"
-  get   "/login",   to: "sessions#create"
-  post  "/logout",   to: "sessions#destory"
+  post   "/login",   to: "sessions#create"
+  delete  "/logout",   to: "sessions#destory"
   resources :users #ユーザー情報取得のさまざまなメソッドなどを使えるようにする
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
