@@ -17,5 +17,7 @@ class SessionsController < ApplicationController
   end
 
   def destory
+    log_out
+    redirect_to root_url, status: :see_other  #HTTPステータスを指定
   end
 end
