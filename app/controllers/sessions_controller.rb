@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
     if user&.authenticate(params[:session][:password])
       #ユーザページにリダイレクトする
       reset_session #ログインの直前にこれを行う
+      remember user
       log_in user
       redirect_to user
     else
@@ -20,4 +21,6 @@ class SessionsController < ApplicationController
     log_out
     redirect_to root_url, status: :see_other  #HTTPステータスを指定
   end
+
+
 end

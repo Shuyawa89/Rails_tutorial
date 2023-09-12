@@ -4,6 +4,7 @@ module SessionsHelper
     session[:user_id] = user.id
   end
 
+
   #ログイン中のユーザを返すメソッド(いない場合nil)
   def current_user
     if session[:user_id]
