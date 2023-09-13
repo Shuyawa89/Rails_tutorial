@@ -50,20 +50,22 @@ class ValidLoginTest < ValidLogin
   end
 end
 
+
 class RememberingTest < UsersLogin
+
   test "login with remembering" do
-    log_in_as(@user,remember_me: '1')
-    assert_equal cookies[:remember_token], assigns(:user).remember_token
-    #assert_not cookies[:remember_token].blank?
+    log_in_as(@user, remember_me: '1')
+    assert_equal cookies['remember_token'], assigns(:user).remember_token
   end
 
   test "login without remembering" do
-    # cookieを保存してログイン
+    # Cookieを保存してログイン
     log_in_as(@user, remember_me: '1')
-    # cookieが消去されていることを検証した後ログイン
+    # Cookieが削除されていることを検証してからログイン
     log_in_as(@user, remember_me: '0')
     assert cookies[:remember_token].blank?
   end
+  
 end
 
 class Logout < ValidLogin
