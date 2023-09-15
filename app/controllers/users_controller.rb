@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  brfore_action :logged_in_user, only: [:edit, :update]
   def show
     @user = User.find(params[:id])
     #debugger #ここで動作を止めてコンソールからパラメータを見ることができる
@@ -25,6 +26,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if @user.update(user_params)
       #更新に成功した時の処理
+      flash[:success] = "Profile updated"
+      redirect_to @user
     else
       render 'edit', status: :unprocessable_entity
     end
