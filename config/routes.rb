@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post   "/login",   to: "sessions#create"
   delete  "/logout",   to: "sessions#destory"
   resources :users #ユーザー情報取得のさまざまなメソッドなどを使えるようにする
+  resources :account_activations, only: [:edit] #アカウント有効化のためのリソース
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
