@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  attr_accessor :remember_token, activation_token
+  attr_accessor :remember_token, :activation_token
   before_save :downcase_email
   before_create :create_activation_digest
   
@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   # ランダムなトークンを返す
   def self.new_token
-    SecureRandom.urlsafe_base64z
+    SecureRandom.urlsafe_base64
   end
   # 永続的セッションのために、ユーザをデータベースに保存する
   def remember
@@ -45,7 +45,7 @@ class User < ApplicationRecord
 
   private
     def downcase_email
-      self.email = email.downcase
+      email.downcase!
     end
 
     def create_activation_digest
