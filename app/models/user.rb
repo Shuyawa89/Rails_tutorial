@@ -32,10 +32,18 @@ class User < ApplicationRecord
     remember_digest || remember
   end
 
-  # 渡されたトークンがダイジェストと一致していたらtrueを返すメソッド
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  # 旧バージョン
+  # # 渡されたトークンがダイジェストと一致していたらtrueを返すメソッド
+  # def authenticated?(remember_token)
+  #   return false if remember_digest.nil?
+  #   BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  # end
+
+  # 渡されたトークンがダイジェストと一致したらtrueを返す
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
   end
 
   # ユーザのログイン情報を破棄する
