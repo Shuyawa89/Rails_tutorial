@@ -10,7 +10,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    redirect_to root_url and return unless @user.activated? #activated?がfalseの場合はroot_urlにリダイレクト
+    @microposts = @user.microposts.paginate(page: params[:page])
+    # redirect_to root_url and return unless @user.activated? #activated?がfalseの場合はroot_urlにリダイレクト
     #debugger #ここで動作を止めてコンソールからパラメータを見ることができる
   end
 
