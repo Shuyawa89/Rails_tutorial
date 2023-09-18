@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   delete  "/logout",   to: "sessions#destory"
   resources :users #ユーザー情報取得のさまざまなメソッドなどを使えるようにする
   resources :account_activations, only: [:edit] #アカウント有効化のためのリソース
+  resources :password_resets,    only: [:new, :create, :edit, :update] #パスワード再設定のためのリソース
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
