@@ -3,14 +3,33 @@ class TagsController < ApplicationController
   before_action :admin_user, only: [:edit, :update, :destroy]
 
   def index
-    @all_tags = Tag.all
-    @tags = @all_tags.paginate(page: params[:page], per_page: 20)
+    @tags = []
+    all_tags = Tag.all
+    all_tags.each do |tag|
+      @tags.push(tag)
+    end
+    @tags = @tags.paginate(page: params[:page], per_page: 20)
   end
 
   def show
-    @tag = Tag.find(params[:id])
-    @posts = Micropost.all.select { |post| post.content.include?(@tag.name) }
-             .paginate(page: params[:page], per_page: 10)
+    tag_id = params[:id]
+    found_tag = nil
+    Tag.all.each do |tag|
+      if tag.id.to_s == tag_id
+        found_tag = tag
+        break
+      end
+    end
+    @tag = found_tag
+
+    @posts = []
+    all_posts = Micropost.all
+    all_posts.each do |post|
+      if post.content.include?(@tag.name)
+        @posts.push(post)
+      end
+    end
+    @posts = @posts.paginate(page: params[:page], per_page: 10)
   end
 
   def new
