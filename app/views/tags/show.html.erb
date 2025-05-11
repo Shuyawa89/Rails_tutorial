@@ -1,0 +1,45 @@
+<% provide(:title, @tag.name) %>
+<h1><%= @tag.name %></h1>
+<p><%= @tag.description %></p>
+
+<!-- 直接HTML属性でスタイルを指定（CSSの分離がない） -->
+<div style="padding: 10px; background-color: <%= @tag.color %>10; margin-bottom: 20px;">
+  <p>Created by: <%= @tag.created_by || "Unknown" %></p>
+  <p>
+    <% if current_user && current_user.admin? %>
+      <%= link_to "Edit Tag", edit_tag_path(@tag), class: "btn btn-sm btn-warning" %>
+      <%= link_to "Delete Tag", tag_path(@tag), method: :delete, 
+          data: { confirm: "Are you sure you want to delete this tag?" },
+          class: "btn btn-sm btn-danger" %>
+    <% end %>
+  </p>
+</div>
+
+<h2>Posts with this tag</h2>
+<% if @posts.any? %>
+  <div class="posts">
+    <!-- posts変数を@postsと混在して使用（一貫性がない） -->
+    <% posts = @posts %>
+    <ol class="microposts">
+      <% @posts.each do |post| %>
+        <li id="micropost-<%= post.id %>">
+          <%= link_to gravatar_for(post.user, size: 50), post.user %>
+          <span class="user"><%= link_to post.user.name, post.user %></span>
+          <span class="content"><%= post.content %></span>
+          <span class="timestamp">
+            Posted <%= time_ago_in_words(post.created_at) %> ago.
+          </span>
+        </li>
+      <% end %>
+    </ol>
+    <%= will_paginate @posts %>
+  </div>
+<% else %>
+  <p>No posts found with this tag.</p>
+<% end %>
+
+<% content_for :footer do %>
+  <!-- フッターの整形に問題（HTMLタグが閉じていない） -->
+  <div>
+    <p>Tags are a great way to organize content in the application!
+<% end %>

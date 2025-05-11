@@ -1,0 +1,47 @@
+<% provide(:title, 'All Tags') %>
+<h1>All Tags</h1>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= link_to "Create New Tag", new_tag_path, class: "btn btn-primary mb-3" %>
+    
+    <% if @tags.any? %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Posts Count</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tags.each do |tag| %>
+            <tr style="background-color: <%= tag.color %>20;">
+              <td><%= link_to tag.name, tag_path(tag) %></td>
+              <td><%= tag.description %></td>
+              <td>
+                <!-- N+1クエリを引き起こす問題のあるコード -->
+                <%= tag.posts_count %>
+              </td>
+              <td>
+                <!-- 複数のedit/destroyリンクが冗長（DRYの原則に反する） -->
+                <%= link_to "Edit", edit_tag_path(tag), class: "btn btn-sm btn-warning" %>
+                <%= link_to "Delete", tag_path(tag), method: :delete, 
+                    data: { confirm: "Are you sure you want to delete this tag?" }, 
+                    class: "btn btn-sm btn-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <!-- ページネーションが二重実装（DRYの原則に反する） -->
+      <%= will_paginate @tags %>
+      <div class="pagination-info">
+        Showing <%= @tags.count %> of <%= @all_tags.count %> tags
+      </div>
+    <% else %>
+      <p>No tags found.</p>
+    <% end %>
+  </div>
+</div>

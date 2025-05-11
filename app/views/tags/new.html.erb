@@ -1,0 +1,38 @@
+<% provide(:title, 'New Tag') %>
+<h1>Create New Tag</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <!-- ビューのロジックが多すぎる（コントローラに移動すべき） -->
+    <% tag_count = Tag.count %>
+    <% if tag_count > 100 %>
+      <div class="alert alert-warning">
+        Warning: There are already <%= tag_count %> tags. Consider removing some before adding more.
+      </div>
+    <% end %>
+    
+    <!-- フォームの再利用がない（DRYの原則に反する） -->
+    <%= form_with(model: @tag, local: true) do |f| %>
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+      
+      <%= f.label :description %>
+      <%= f.text_area :description, class: 'form-control' %>
+      
+      <%= f.label :color %>
+      <!-- rawを使用している（XSS脆弱性のリスク） -->
+      <%= f.color_field :color, value: raw("#3498db"), class: 'form-control' %>
+      
+      <%= f.label :created_by %>
+      <%= f.text_field :created_by, value: current_user.name, class: 'form-control' %>
+      
+      <%= f.submit "Create Tag", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-6 col-md-offset-3">
+    <%= link_to "Back to all tags", tags_path %>
+  </div>
+</div>
